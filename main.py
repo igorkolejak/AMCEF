@@ -1,8 +1,8 @@
 from flask import Flask
-from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with 
+from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 
-import requests 
+import requests
 
 app = Flask(__name__)
 api = Api(app)
@@ -37,7 +37,7 @@ class PostModel(db.Model):
   userId = db.Column(db.Integer, nullable=False)
   title = db.Column(db.String(100), nullable=False)
   body = db.Column(db.String(100), nullable=False)
-  
+
   def __repr__(self):
     return f"Post(id = {self.id}, userId = {self.userId}, title = {self.title}, body = {self.body}"
 
@@ -59,7 +59,7 @@ class Post(Resource):
         db.session.add(result)
         db.session.commit()
     return result
-  
+
   @marshal_with(resource_fields)
   def put(self, post_id):
     args = post_put_args.parse_args()
@@ -73,7 +73,7 @@ class Post(Resource):
     except:
       abort(404, message = "Insert failed: Post with id \"" + str(post_id) + '\" already exist.')
     return post
-  
+
   @marshal_with(resource_fields)
   def patch(self, post_id):
     args = post_update_args.parse_args()
@@ -91,7 +91,7 @@ class Post(Resource):
     except:
       abort(404, message = "Insert failed: Post with id \"" + str(post_id) + '\" already exist.')
     return post
-  
+
   def delete(self, post_id):
     post = PostModel.query.filter_by(id=post_id).first()
     if post:
