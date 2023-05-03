@@ -16,7 +16,6 @@ post_put_args.add_argument("title", type=str, help="Title has to be specified.",
 post_put_args.add_argument("body", type=str, help="Body has to be specified.", required=True)
 
 post_update_args = reqparse.RequestParser()
-post_update_args.add_argument("userId", type=int, help="User ID has to be specified.")
 post_update_args.add_argument("title", type=str, help="Title has to be specified.")
 post_update_args.add_argument("body", type=str, help="Body has to be specified.")
 
@@ -81,8 +80,6 @@ class Post(Resource):
     if not post:
       post = requests.get(EXTERNAL_API + "posts/" + str(post_id))
     try:
-      if args['userId']:
-        post.userId = args['userId']
       if args['title']:
         post.title = args['title']
       if args['body']:
