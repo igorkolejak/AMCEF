@@ -1,0 +1,214 @@
+openapi: 3.0.3
+info:
+  title: AMCEF Test App - OpenAPI 3.0
+  description: |-
+    This is basic documentation for AMCEF test application
+  contact:
+    email: igor.kolejak@gmail.com
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5000/
+tags:
+  - name: post
+    description: Everything about your posts
+paths:
+  /post/{post_id}:
+    get:
+      tags:
+        - post
+      summary: Find post by ID
+      description: Returns a single post
+      operationId: get
+      parameters:
+        - name: post_id
+          in: path
+          description: ID of post to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/post'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/post'
+        '400':
+          description: Invalid ID supplied
+
+  /post/0:
+    get:
+      tags:
+        - post
+      summary: Find post by ID
+      description: Returns a all posts with userId
+      operationId: get
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/post'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/post'
+        '404':
+          description: Get failed: Invalid ID
+
+    put:
+      tags:
+        - post
+      summary: Insert new post with ID
+      description: Returns inserted post
+      operationId: put
+      parameters:
+        - in: path
+          name: post_id
+          description: ID of post to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: User ID
+        - in: query
+          name: title
+          required: true
+          schema:
+            type: string
+          description: Post title
+        - in: query
+          name: body
+          required: true
+          schema:
+            type: string
+          description: Post body
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/post'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/post'
+        '400':
+          description: Insert failed - Invalid id
+        '404':
+          description: Insert failed - Invalid userId
+
+    delete:
+      tags:
+        - post
+      summary: Delete post with ID
+      description: Returns message="Delete successful."
+      operationId: delete
+      parameters:
+        - in: path
+          name: post_id
+          description: ID of post to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/delete'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/delete'
+        '400':
+          description: Delete failed - Invalid id
+
+    patch:
+      tags:
+        - post
+      summary: Update post with ID
+      description: Returns a single post
+      operationId: delete
+      parameters:
+        - in: path
+          name: post_id
+          description: ID of post to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: userId
+          schema:
+            type: integer
+          description: User ID
+        - in: query
+          name: title
+          schema:
+            type: string
+          description: Post title
+        - in: query
+          name: body
+          schema:
+            type: string
+          description: Post body
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/post'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/post'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: post not found
+
+components:
+  schemas:
+    post:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        userId:
+          type: integer
+          format: int64
+          example: 10
+        title:
+          type: string
+          example: lorem ipsum
+        body:
+          type: string
+          example: lorem ipsum
+    delete:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Delete sucessful
